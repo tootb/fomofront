@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import io from 'socket.io-client';
 
 export const useGameState = () => {
-  const [socket, setSocket] = useState(null);
+  // Removed unused socket state - we use newSocket directly
   const [gameState, setGameState] = useState({
     timeLeft: 6 * 60 * 60 * 1000, // 6 hours in milliseconds
     isActive: false, // Start inactive
@@ -17,7 +17,7 @@ export const useGameState = () => {
   });
 
   useEffect(() => {
-    const serverUrl = process.env.REACT_APP_SERVER_URL || 'http://localhost:3001';
+    const serverUrl = process.env.REACT_APP_API_URL || 'http://localhost:3001';
     
     // Optimized Socket.IO configuration to reduce header size
     const newSocket = io(serverUrl, {
@@ -44,8 +44,6 @@ export const useGameState = () => {
         }
       }
     });
-    
-    setSocket(newSocket);
 
     // Connection event handlers
     newSocket.on('connect', () => {
