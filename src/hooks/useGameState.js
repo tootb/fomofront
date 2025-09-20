@@ -95,10 +95,10 @@ export const useGameState = () => {
     // Fetch pot status separately (less frequent)
     fetchPotStatus();
     
-    // Poll game state every 5 seconds
+    // Poll game state every 1 second for real-time timer and transactions
     const gameStateInterval = setInterval(() => {
       fetchGameState();
-    }, 5000);
+    }, 1000);
     
     // Poll pot status every 2 minutes (less frequent since it updates every 5 minutes on backend)
     const potStatusInterval = setInterval(() => {
