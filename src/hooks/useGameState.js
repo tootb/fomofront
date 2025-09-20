@@ -66,10 +66,10 @@ export const useGameState = () => {
     console.log('🚀 Starting initial game state fetch...');
     fetchGameState();
     
-    // Poll every 2 seconds for real-time updates
+    // Poll every 5 seconds for real-time updates (reduced from 2 seconds)
     const interval = setInterval(() => {
       fetchGameState();
-    }, 2000);
+    }, 5000);
     
     // Cleanup
     return () => {
