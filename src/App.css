@@ -435,7 +435,7 @@ body {
 
 .timer-container.waiting .timer-display {
   color: #ffaa00;
-  font-size: 6rem;
+  font-size: 4rem; /* IMPORTANTE: Mismo tamaño que el timer normal */
   text-shadow: 0 0 30px rgba(255, 170, 0, 0.8);
 }
 
@@ -446,6 +446,7 @@ body {
 
 .timer-container.ended .timer-display {
   color: #ff0066;
+  font-size: 4rem; /* IMPORTANTE: Mantener consistente */
   text-shadow: 0 0 30px rgba(255, 0, 102, 0.8);
 }
 
