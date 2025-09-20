@@ -55,6 +55,9 @@ const RulesModal = ({ onClose }) => {
         <p>
           This wallet is checked every 5 minutes to display the exact amount of SOL available as prize.
         </p>
+        <p>
+          <strong>70% of pump.fun fees</strong> go to the POT and <strong>30% for buy and burns</strong>.
+        </p>
 
         <h3>🏆 Winner System</h3>
         <ul>
@@ -88,9 +91,10 @@ const RulesModal = ({ onClose }) => {
           <li>Add/subtract time from the timer</li>
           <li>Become candidates to win the pot</li>
           <li>Appear as "last buyers" for prize distribution</li>
+          <li>Appear in the transactions list</li>
         </ul>
         <p>
-          Transactions below the required level will appear in the list but <strong>won't affect the game</strong>.
+          Transactions below the required level <strong>will not appear in the list</strong> and won't affect the game.
         </p>
 
         <h3>🔄 New Rounds</h3>
@@ -101,7 +105,7 @@ const RulesModal = ({ onClose }) => {
         <h3>🎲 Strategy</h3>
         <p>
           <strong>Do you buy early to participate longer, or wait until the end to be the last buyer?</strong> 
-          The choice is yours, but remember that each purchase resets the countdown!
+          The choice is yours, but remember that each purchase extends the countdown!
         </p>
       </div>
     </div>
