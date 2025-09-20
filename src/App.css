@@ -203,6 +203,16 @@ body {
   text-align: center;
 }
 
+.next-level-countdown {
+  animation: pulseOrange 2s infinite;
+}
+
+@keyframes pulseOrange {
+  0% { box-shadow: 0 0 10px rgba(255, 165, 0, 0.3); }
+  50% { box-shadow: 0 0 20px rgba(255, 165, 0, 0.6); }
+  100% { box-shadow: 0 0 10px rgba(255, 165, 0, 0.3); }
+}
+
 .level-item {
   display: flex;
   justify-content: space-between;
@@ -216,6 +226,7 @@ body {
   border-radius: 8px;
   padding: 0.5rem;
   border-bottom: none;
+  box-shadow: 0 0 15px rgba(0, 255, 255, 0.3);
 }
 
 .level-item.completed {
