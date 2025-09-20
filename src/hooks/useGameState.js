@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 
 export const useGameState = () => {
   const [gameState, setGameState] = useState({
-    timeLeft: 6 * 60 * 60 * 1000, // 6 hours in milliseconds
+    timeLeft: 2 * 60 * 60 * 1000, // 2 hours in milliseconds
     isActive: false, // Start inactive
     waitingForFirstBuy: true, // Waiting for first buy
     currentRound: 1,
