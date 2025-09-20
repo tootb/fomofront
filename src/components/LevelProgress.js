@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { ROUND_1_LEVELS, ROUND_N_LEVELS } from '../utils/constants';
 
-const LevelProgress = ({ currentRound, currentLevel, gameStartTime }) => {
+const LevelProgress = ({ currentRound, currentLevel, gameStartTime, isActive, currentLevelStartTime }) => {
   const [timeToNextLevel, setTimeToNextLevel] = useState(null);
 
   const getLevels = () => {
@@ -9,6 +9,10 @@ const LevelProgress = ({ currentRound, currentLevel, gameStartTime }) => {
   };
 
   const getCurrentLevelIndex = () => {
+    if (!isActive || !gameStartTime) {
+      return 0; // If game hasn't started, we're at level 1 (index 0)
+    }
+
     const levels = getLevels();
     const elapsed = Date.now() - gameStartTime;
     let totalTime = 0;
@@ -27,20 +31,36 @@ const LevelProgress = ({ currentRound, currentLevel, gameStartTime }) => {
 
   const calculateTimeToNextLevel = () => {
     const levels = getLevels();
-    const currentLevelIndex = getCurrentLevelIndex();
-    const elapsed = Date.now() - gameStartTime;
+    let currentLevelIndex;
+
+    if (!isActive || !gameStartTime) {
+      // Game hasn't started yet, show countdown to Level 2
+      currentLevelIndex = 0;
+      return levels[0].duration * 60 * 60 * 1000; // Show full duration of Level 1
+    }
+
+    currentLevelIndex = getCurrentLevelIndex();
     
     // If we're at the last level (infinite duration), no next level
     if (currentLevelIndex >= levels.length - 1 || levels[currentLevelIndex].duration === Infinity) {
       return null;
     }
-    
-    // Calculate when the next level starts
+
+    // Use currentLevelStartTime if available, otherwise fallback to calculation
+    if (currentLevelStartTime) {
+      const currentLevelDuration = levels[currentLevelIndex].duration * 60 * 60 * 1000;
+      const elapsed = Date.now() - currentLevelStartTime;
+      const timeRemaining = currentLevelDuration - elapsed;
+      return Math.max(0, timeRemaining);
+    }
+
+    // Fallback: Calculate when the next level starts based on game start time
     let totalTimeToNextLevel = 0;
     for (let i = 0; i <= currentLevelIndex; i++) {
       totalTimeToNextLevel += levels[i].duration * 60 * 60 * 1000;
     }
     
+    const elapsed = Date.now() - gameStartTime;
     const timeRemaining = totalTimeToNextLevel - elapsed;
     return Math.max(0, timeRemaining);
   };
@@ -61,6 +81,11 @@ const LevelProgress = ({ currentRound, currentLevel, gameStartTime }) => {
     }
   };
 
+  const getNextLevelNumber = () => {
+    const currentLevelIndex = getCurrentLevelIndex();
+    return currentLevelIndex + 2; // +1 for next level, +1 because levels start at 1
+  };
+
   useEffect(() => {
     const updateCountdown = () => {
       const timeRemaining = calculateTimeToNextLevel();
@@ -74,7 +99,7 @@ const LevelProgress = ({ currentRound, currentLevel, gameStartTime }) => {
     const interval = setInterval(updateCountdown, 1000);
 
     return () => clearInterval(interval);
-  }, [gameStartTime, currentRound]);
+  }, [gameStartTime, currentRound, isActive, currentLevelStartTime]);
 
   const levels = getLevels();
   const currentLevelIndex = getCurrentLevelIndex();
@@ -99,7 +124,7 @@ const LevelProgress = ({ currentRound, currentLevel, gameStartTime }) => {
             marginBottom: '0.3rem',
             fontWeight: 'bold'
           }}>
-            Next Level in:
+            {!isActive ? 'Level 1 Duration:' : `Level ${getNextLevelNumber()} in:`}
           </div>
           <div style={{ 
             color: '#ffffff', 

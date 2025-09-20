@@ -47,6 +47,8 @@ function App() {
             currentRound={gameState.currentRound}
             currentLevel={gameState.currentLevel}
             gameStartTime={gameState.gameStartTime}
+            isActive={gameState.isActive}
+            currentLevelStartTime={gameState.currentLevelStartTime}
           />
         </div>
 
