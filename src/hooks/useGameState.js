@@ -16,42 +16,48 @@ export const useGameState = () => {
   });
 
   useEffect(() => {
-    const serverUrl = process.env.REACT_APP_API_URL || 'http://localhost:3001';
+    const serverUrl = process.env.REACT_APP_API_URL || 'https://fomoback.vercel.app';
     
+    console.log('🔗 Attempting to connect to:', serverUrl);
+    
+    // Updated Socket.IO configuration for better Vercel compatibility
     const newSocket = io(serverUrl, {
-      transports: ['websocket', 'polling'],
+      transports: ['polling', 'websocket'], // Polling first for Vercel
       upgrade: true,
-      rememberUpgrade: true,
       timeout: 20000,
-      forceNew: false,
       reconnection: true,
-      reconnectionDelay: 1000,
+      reconnectionDelay: 2000,
       reconnectionAttempts: 5,
-      maxReconnectionAttempts: 5,
+      forceNew: false,
+      autoConnect: true,
+      // Remove headers that might cause issues
       extraHeaders: {},
-      withCredentials: false,
-      transportOptions: {
-        polling: { extraHeaders: {} },
-        websocket: { extraHeaders: {} }
-      }
+      withCredentials: false
     });
 
-    // Connection event handlers
+    // Connection event handlers with better logging
     newSocket.on('connect', () => {
-      console.log('Connected to server');
+      console.log('✅ Successfully connected to backend!');
+      console.log('Socket ID:', newSocket.id);
+      console.log('Transport:', newSocket.io.engine.transport.name);
+      
       setGameState(prevState => ({
         ...prevState,
         connected: true
       }));
       
-      // Request initial game state
+      // Request initial game state after successful connection
       setTimeout(() => {
+        console.log('📤 Requesting initial game state...');
         newSocket.emit('requestGameState');
-      }, 500);
+      }, 1000);
     });
 
     newSocket.on('connect_error', (error) => {
-      console.error('Connection error:', error.message);
+      console.error('❌ Connection error:', error.message);
+      console.log('Error details:', error);
+      console.log('Attempted URL:', serverUrl);
+      
       setGameState(prevState => ({
         ...prevState,
         connected: false
@@ -59,16 +65,28 @@ export const useGameState = () => {
     });
 
     newSocket.on('disconnect', (reason) => {
-      console.log('Disconnected:', reason);
+      console.log('📡 Disconnected from backend:', reason);
       setGameState(prevState => ({
         ...prevState,
         connected: false
       }));
     });
 
+    newSocket.on('reconnect', (attemptNumber) => {
+      console.log('🔄 Reconnected after', attemptNumber, 'attempts');
+    });
+
+    newSocket.on('reconnect_attempt', (attemptNumber) => {
+      console.log('🔄 Reconnection attempt', attemptNumber);
+    });
+
+    newSocket.on('reconnect_error', (error) => {
+      console.error('❌ Reconnection error:', error.message);
+    });
+
     // Listen for game state updates
     newSocket.on('gameStateUpdate', (state) => {
-      console.log('Game state update received:', state);
+      console.log('📊 Game state update received:', state);
       setGameState(prevState => ({
         ...prevState,
         ...state,
@@ -87,7 +105,7 @@ export const useGameState = () => {
 
     // Listen for new buy transactions
     newSocket.on('newBuy', (buyData) => {
-      console.log('New buy received:', buyData);
+      console.log('🟢 New buy received:', buyData);
       setGameState(prevState => ({
         ...prevState,
         recentBuys: [buyData, ...prevState.recentBuys].slice(0, 50),
@@ -98,7 +116,7 @@ export const useGameState = () => {
 
     // Listen for new sell transactions
     newSocket.on('newSell', (sellData) => {
-      console.log('New sell received:', sellData);
+      console.log('🔴 New sell received:', sellData);
       setGameState(prevState => ({
         ...prevState,
         recentBuys: [sellData, ...prevState.recentBuys].slice(0, 50),
@@ -108,6 +126,7 @@ export const useGameState = () => {
 
     // Listen for round changes
     newSocket.on('roundChange', (roundData) => {
+      console.log('🎮 Round change:', roundData);
       setGameState(prevState => ({
         ...prevState,
         currentRound: roundData.round,
@@ -121,6 +140,7 @@ export const useGameState = () => {
 
     // Listen for game start event
     newSocket.on('gameStarted', (data) => {
+      console.log('🚀 Game started:', data);
       setGameState(prevState => ({
         ...prevState,
         isActive: true,
@@ -132,6 +152,7 @@ export const useGameState = () => {
 
     // Listen for level changes
     newSocket.on('levelChange', (levelData) => {
+      console.log('📈 Level change:', levelData);
       setGameState(prevState => ({
         ...prevState,
         currentLevel: levelData.level
@@ -140,6 +161,7 @@ export const useGameState = () => {
 
     // Listen for winners announcement
     newSocket.on('winnersAnnounced', (winnersData) => {
+      console.log('🏆 Winners announced:', winnersData);
       setGameState(prevState => ({
         ...prevState,
         winners: {
@@ -160,10 +182,17 @@ export const useGameState = () => {
 
     // Error handling
     newSocket.on('error', (error) => {
-      console.error('Socket error:', error);
+      console.error('🔥 Socket error:', error);
     });
 
+    // Transport upgrade event
+    newSocket.io.on('upgrade', () => {
+      console.log('📶 Upgraded to', newSocket.io.engine.transport.name);
+    });
+
+    // Cleanup on unmount
     return () => {
+      console.log('🧹 Cleaning up socket connection');
       newSocket.close();
     };
   }, []);
