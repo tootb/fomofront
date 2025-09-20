@@ -39,7 +39,7 @@ const Timer = ({ timeLeft, isActive, waitingForFirstBuy }) => {
   return (
     <div className={getTimerClass()}>
       <div className="timer-display">
-        {waitingForFirstBuy ? '⏳' : `${time.hours}:${time.minutes}:${time.seconds}`}
+        {`${time.hours}:${time.minutes}:${time.seconds}`}
       </div>
       <div className="timer-label">
         {getTimerLabel()}
