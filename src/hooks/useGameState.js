@@ -7,6 +7,7 @@ export const useGameState = () => {
     waitingForFirstBuy: true, // Waiting for first buy
     currentRound: 1,
     currentLevel: 1,
+    currentLevelStartTime: null, // Add this field
     pot: 0, // This comes from wallet balance now
     recentBuys: [],
     winners: {},
@@ -39,7 +40,10 @@ export const useGameState = () => {
             pot: data.pot,
             recentBuys: data.recentBuys?.length || 0,
             isActive: data.isActive,
-            waitingForFirstBuy: data.waitingForFirstBuy
+            waitingForFirstBuy: data.waitingForFirstBuy,
+            gameStartTime: data.gameStartTime,
+            currentLevelStartTime: data.currentLevelStartTime,
+            timeLeft: data.timeLeft
           });
           
           setGameState(prevState => ({

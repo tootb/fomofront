@@ -114,6 +114,14 @@ const LevelProgress = ({ currentRound, currentLevel, gameStartTime, isActive, cu
   };
 
   useEffect(() => {
+    console.log('LevelProgress useEffect triggered with props:', {
+      currentRound,
+      currentLevel, 
+      gameStartTime,
+      isActive,
+      currentLevelStartTime
+    });
+
     const updateCountdown = () => {
       const timeRemaining = calculateTimeToNextLevel();
       console.log('Level Progress Debug:', {
@@ -122,7 +130,8 @@ const LevelProgress = ({ currentRound, currentLevel, gameStartTime, isActive, cu
         currentRound,
         gameStartTime,
         currentLevelStartTime,
-        timeRemaining
+        timeRemaining,
+        formattedTime: timeRemaining ? formatCountdown(timeRemaining) : 'null'
       });
       setTimeToNextLevel(timeRemaining);
     };
