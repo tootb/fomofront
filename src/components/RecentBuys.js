@@ -22,6 +22,23 @@ const RecentBuys = ({ buys }) => {
     return type === 'buy' ? '#00ff88' : '#ff4757';
   };
 
+  const openSolscanLink = (txHash) => {
+    if (txHash && !txHash.includes('simulated')) {
+      const url = `https://solscan.io/tx/${txHash}`;
+      window.open(url, '_blank', 'noopener,noreferrer');
+    }
+  };
+
+  const formatTxHash = (txHash) => {
+    if (!txHash) return 'N/A';
+    if (txHash.includes('simulated')) return 'Simulated';
+    return `${txHash.slice(0, 8)}...`;
+  };
+
+  const isTxClickable = (txHash) => {
+    return txHash && !txHash.includes('simulated');
+  };
+
   return (
     <div className="recent-buys">
       <h3>Recent Transactions (Last 50)</h3>
@@ -67,12 +84,25 @@ const RecentBuys = ({ buys }) => {
                 {moment(transaction.timestamp).format('HH:mm:ss')}
               </div>
               
-              <div className="buy-tx" style={{ 
-                fontSize: '0.7rem', 
-                color: 'rgba(0, 255, 255, 0.8)',
-                wordBreak: 'break-all'
-              }}>
-                TX: {transaction.txHash ? `${transaction.txHash.slice(0, 8)}...` : 'N/A'}
+              <div 
+                className={`buy-tx ${isTxClickable(transaction.txHash) ? 'clickable' : ''}`}
+                onClick={() => isTxClickable(transaction.txHash) && openSolscanLink(transaction.txHash)}
+                style={{
+                  cursor: isTxClickable(transaction.txHash) ? 'pointer' : 'default',
+                  opacity: isTxClickable(transaction.txHash) ? 1 : 0.6
+                }}
+                title={isTxClickable(transaction.txHash) ? 'Click to view on Solscan' : 'Transaction not available on explorer'}
+              >
+                TX: {formatTxHash(transaction.txHash)}
+                {isTxClickable(transaction.txHash) && (
+                  <span style={{ 
+                    marginLeft: '0.5rem', 
+                    fontSize: '0.6rem',
+                    opacity: 0.8
+                  }}>
+                    🔗
+                  </span>
+                )}
               </div>
             </div>
           ))

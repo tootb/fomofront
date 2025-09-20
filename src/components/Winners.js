@@ -28,6 +28,23 @@ const Winners = ({ winners = {} }) => {
     }
   };
 
+  const openSolscanLink = (txHash) => {
+    if (txHash && !txHash.includes('simulated')) {
+      const url = `https://solscan.io/tx/${txHash}`;
+      window.open(url, '_blank', 'noopener,noreferrer');
+    }
+  };
+
+  const formatTxHash = (txHash) => {
+    if (!txHash) return 'N/A';
+    if (txHash.includes('simulated')) return 'Simulated';
+    return `${txHash.slice(0, 8)}...`;
+  };
+
+  const isTxClickable = (txHash) => {
+    return txHash && !txHash.includes('simulated');
+  };
+
   return (
     <div className="winners-panel">
       <h3>🏆 Winners by Round</h3>
@@ -77,12 +94,25 @@ const Winners = ({ winners = {} }) => {
                     <div className="winner-time">
                       {moment(winner.timestamp).format('MM/DD HH:mm:ss')}
                     </div>
-                    <div style={{ 
-                      fontSize: '0.7rem', 
-                      color: 'rgba(0, 255, 255, 0.8)',
-                      wordBreak: 'break-all'
-                    }}>
-                      TX: {winner.txHash ? `${winner.txHash.slice(0, 8)}...` : 'N/A'}
+                    <div 
+                      className={`winner-tx ${isTxClickable(winner.txHash) ? 'clickable' : ''}`}
+                      onClick={() => isTxClickable(winner.txHash) && openSolscanLink(winner.txHash)}
+                      style={{
+                        cursor: isTxClickable(winner.txHash) ? 'pointer' : 'default',
+                        opacity: isTxClickable(winner.txHash) ? 1 : 0.6
+                      }}
+                      title={isTxClickable(winner.txHash) ? 'Click to view on Solscan' : 'Transaction not available on explorer'}
+                    >
+                      TX: {formatTxHash(winner.txHash)}
+                      {isTxClickable(winner.txHash) && (
+                        <span style={{ 
+                          marginLeft: '0.5rem', 
+                          fontSize: '0.6rem',
+                          opacity: 0.8
+                        }}>
+                          🔗
+                        </span>
+                      )}
                     </div>
                     {winner.prize && (
                       <div style={{ 

@@ -7,7 +7,7 @@ export const useGameState = () => {
     waitingForFirstBuy: true, // Waiting for first buy
     currentRound: 1,
     currentLevel: 1,
-    pot: 0,
+    pot: 0, // This comes from wallet balance now
     recentBuys: [],
     winners: {},
     gameStartTime: Date.now(),
@@ -15,9 +15,9 @@ export const useGameState = () => {
   });
 
   useEffect(() => {
-    const API_URL = process.env.REACT_APP_API_URL || 'https://fomoback.vercel.app';
+    const API_URL = process.env.REACT_APP_SERVER_URL || process.env.REACT_APP_API_URL || 'https://fomoback.vercel.app';
     
-    console.log('🔗 Using HTTP polling instead of WebSocket');
+    console.log('🔗 Using HTTP polling for game state');
     console.log('📡 API URL:', API_URL);
     
     const fetchGameState = async () => {
@@ -38,7 +38,8 @@ export const useGameState = () => {
             level: data.currentLevel,
             pot: data.pot,
             recentBuys: data.recentBuys?.length || 0,
-            isActive: data.isActive
+            isActive: data.isActive,
+            waitingForFirstBuy: data.waitingForFirstBuy
           });
           
           setGameState(prevState => ({
@@ -62,19 +63,53 @@ export const useGameState = () => {
       }
     };
 
+    // Additional function to check pot status
+    const fetchPotStatus = async () => {
+      try {
+        const response = await fetch(`${API_URL}/api/pot-status`, {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          cache: 'no-cache'
+        });
+        
+        if (response.ok) {
+          const data = await response.json();
+          console.log('💰 Pot status:', data.currentPot, 'SOL');
+          
+          setGameState(prevState => ({
+            ...prevState,
+            pot: data.currentPot
+          }));
+        }
+      } catch (error) {
+        console.error('❌ Error fetching pot status:', error.message);
+      }
+    };
+
     // Initial fetch
     console.log('🚀 Starting initial game state fetch...');
     fetchGameState();
     
-    // Poll every 5 seconds for real-time updates (reduced from 2 seconds)
-    const interval = setInterval(() => {
+    // Fetch pot status separately (less frequent)
+    fetchPotStatus();
+    
+    // Poll game state every 5 seconds
+    const gameStateInterval = setInterval(() => {
       fetchGameState();
     }, 5000);
     
+    // Poll pot status every 2 minutes (less frequent since it updates every 5 minutes on backend)
+    const potStatusInterval = setInterval(() => {
+      fetchPotStatus();
+    }, 2 * 60 * 1000);
+    
     // Cleanup
     return () => {
-      console.log('🧹 Cleaning up HTTP polling interval');
-      clearInterval(interval);
+      console.log('🧹 Cleaning up HTTP polling intervals');
+      clearInterval(gameStateInterval);
+      clearInterval(potStatusInterval);
     };
   }, []);
 
