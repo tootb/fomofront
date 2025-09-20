@@ -122,6 +122,31 @@ const LevelProgress = ({ currentRound, currentLevel, gameStartTime, isActive, cu
       currentLevelStartTime
     });
 
+    const getLevels = () => {
+      return currentRound === 1 ? ROUND_1_LEVELS : ROUND_N_LEVELS;
+    };
+
+    const getCurrentLevelIndex = () => {
+      if (!isActive || !gameStartTime) {
+        return 0; // If game hasn't started, we're at level 1 (index 0)
+      }
+
+      const levels = getLevels();
+      const elapsed = Date.now() - gameStartTime;
+      let totalTime = 0;
+      
+      for (let i = 0; i < levels.length; i++) {
+        if (levels[i].duration === Infinity) {
+          return i;
+        }
+        totalTime += levels[i].duration * 60 * 60 * 1000; // Convert hours to ms
+        if (elapsed < totalTime) {
+          return i;
+        }
+      }
+      return levels.length - 1;
+    };
+
     const calculateTimeToNextLevel = () => {
       const levels = getLevels();
       
@@ -206,10 +231,10 @@ const LevelProgress = ({ currentRound, currentLevel, gameStartTime, isActive, cu
     const interval = setInterval(updateCountdown, 1000);
 
     return () => clearInterval(interval);
-  }, [gameStartTime, currentRound, isActive, currentLevelStartTime, currentLevel]); // Added currentLevel
+  }, [gameStartTime, currentRound, isActive, currentLevelStartTime, currentLevel]);
 
-  const levels = getLevels();
-  const currentLevelIndex = getCurrentLevelIndex();
+  const levels = currentRound === 1 ? ROUND_1_LEVELS : ROUND_N_LEVELS;
+  const currentLevelIndex = currentLevel - 1; // Convert to 0-based index
 
   return (
     <div className="level-progress">
