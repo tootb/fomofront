@@ -122,6 +122,69 @@ const LevelProgress = ({ currentRound, currentLevel, gameStartTime, isActive, cu
       currentLevelStartTime
     });
 
+    const calculateTimeToNextLevel = () => {
+      const levels = getLevels();
+      
+      console.log('calculateTimeToNextLevel - Debug:', {
+        isActive,
+        gameStartTime,
+        currentLevelStartTime,
+        currentLevel,
+        levelsLength: levels.length
+      });
+
+      // Game hasn't started yet - show Level 1 duration
+      if (!isActive || !gameStartTime) {
+        const level1Duration = levels[0].duration * 60 * 60 * 1000;
+        console.log('Game not started, showing Level 1 duration:', level1Duration);
+        return level1Duration;
+      }
+
+      const currentLevelIndex = getCurrentLevelIndex();
+      console.log('Current level index:', currentLevelIndex);
+      
+      // If we're at the last level (infinite duration), no next level
+      if (currentLevelIndex >= levels.length - 1 || levels[currentLevelIndex].duration === Infinity) {
+        console.log('At last level or infinite level');
+        return null;
+      }
+
+      // Calculate time remaining in current level
+      const currentLevelDuration = levels[currentLevelIndex].duration * 60 * 60 * 1000;
+      console.log('Current level duration (ms):', currentLevelDuration);
+
+      // Use currentLevelStartTime if available
+      if (currentLevelStartTime) {
+        const elapsed = Date.now() - currentLevelStartTime;
+        const timeRemaining = currentLevelDuration - elapsed;
+        console.log('Using currentLevelStartTime:', {
+          elapsed,
+          timeRemaining: Math.max(0, timeRemaining)
+        });
+        return Math.max(0, timeRemaining);
+      }
+
+      // Fallback: Calculate based on total elapsed time from game start
+      const gameElapsed = Date.now() - gameStartTime;
+      let totalTimeForCurrentLevel = 0;
+      
+      for (let i = 0; i < currentLevelIndex; i++) {
+        totalTimeForCurrentLevel += levels[i].duration * 60 * 60 * 1000;
+      }
+      
+      const elapsedInCurrentLevel = gameElapsed - totalTimeForCurrentLevel;
+      const timeRemaining = currentLevelDuration - elapsedInCurrentLevel;
+      
+      console.log('Fallback calculation:', {
+        gameElapsed,
+        totalTimeForCurrentLevel,
+        elapsedInCurrentLevel,
+        timeRemaining: Math.max(0, timeRemaining)
+      });
+      
+      return Math.max(0, timeRemaining);
+    };
+
     const updateCountdown = () => {
       const timeRemaining = calculateTimeToNextLevel();
       console.log('Level Progress Debug:', {
@@ -143,7 +206,7 @@ const LevelProgress = ({ currentRound, currentLevel, gameStartTime, isActive, cu
     const interval = setInterval(updateCountdown, 1000);
 
     return () => clearInterval(interval);
-  }, [gameStartTime, currentRound, isActive, currentLevelStartTime]);
+  }, [gameStartTime, currentRound, isActive, currentLevelStartTime, currentLevel]); // Added currentLevel
 
   const levels = getLevels();
   const currentLevelIndex = getCurrentLevelIndex();
