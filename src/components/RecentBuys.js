@@ -10,9 +10,21 @@ const RecentBuys = ({ buys }) => {
     return parseFloat(amount).toFixed(2);
   };
 
+  const getTransactionIcon = (type) => {
+    return type === 'buy' ? '🟢' : '🔴';
+  };
+
+  const getTransactionLabel = (type) => {
+    return type === 'buy' ? 'BUY' : 'SELL';
+  };
+
+  const getTransactionColor = (type) => {
+    return type === 'buy' ? '#00ff88' : '#ff4757';
+  };
+
   return (
     <div className="recent-buys">
-      <h3>Recent Valid Buys (Last 50)</h3>
+      <h3>Recent Transactions (Last 50)</h3>
       <div className="buys-list">
         {!buys || buys.length === 0 ? (
           <div style={{ 
@@ -20,35 +32,48 @@ const RecentBuys = ({ buys }) => {
             color: 'rgba(255, 255, 255, 0.5)', 
             padding: '2rem' 
           }}>
-            No valid buys yet
+            No transactions yet
           </div>
         ) : (
-          buys.map((buy, index) => (
-            <div key={buy.txHash || buy._id || index} className="buy-item">
+          buys.map((transaction, index) => (
+            <div key={transaction.txHash || transaction._id || index} className="buy-item">
+              <div style={{ 
+                display: 'flex', 
+                justifyContent: 'space-between',
+                alignItems: 'center',
+                marginBottom: '0.5rem'
+              }}>
+                <span style={{ 
+                  color: getTransactionColor(transaction.type),
+                  fontWeight: 'bold',
+                  fontSize: '0.9rem'
+                }}>
+                  {getTransactionIcon(transaction.type)} {getTransactionLabel(transaction.type)}
+                </span>
+                <span style={{ color: '#ffd700', fontSize: '0.8rem' }}>
+                  Round {transaction.round}
+                </span>
+              </div>
+              
               <div className="buy-amount">
-                {formatAmount(buy.amount)} SOL
+                {formatAmount(transaction.amount)} SOL
               </div>
+              
               <div className="buy-wallet">
-                {formatWallet(buy.wallet)}
+                {formatWallet(transaction.wallet)}
               </div>
+              
               <div className="buy-time">
-                {moment(buy.timestamp).format('HH:mm:ss')}
+                {moment(transaction.timestamp).format('HH:mm:ss')}
               </div>
+              
               <div className="buy-tx" style={{ 
                 fontSize: '0.7rem', 
                 color: 'rgba(0, 255, 255, 0.8)',
                 wordBreak: 'break-all'
               }}>
-                TX: {buy.txHash ? `${buy.txHash.slice(0, 8)}...` : 'N/A'}
+                TX: {transaction.txHash ? `${transaction.txHash.slice(0, 8)}...` : 'N/A'}
               </div>
-              {buy.round && (
-                <div style={{ 
-                  fontSize: '0.7rem', 
-                  color: 'rgba(255, 255, 0, 0.8)'
-                }}>
-                  Round {buy.round}
-                </div>
-              )}
             </div>
           ))
         )}

@@ -2,7 +2,6 @@ import { useState, useEffect } from 'react';
 import io from 'socket.io-client';
 
 export const useGameState = () => {
-  // Removed unused socket state - we use newSocket directly
   const [gameState, setGameState] = useState({
     timeLeft: 6 * 60 * 60 * 1000, // 6 hours in milliseconds
     isActive: false, // Start inactive
@@ -19,9 +18,8 @@ export const useGameState = () => {
   useEffect(() => {
     const serverUrl = process.env.REACT_APP_API_URL || 'http://localhost:3001';
     
-    // Optimized Socket.IO configuration to reduce header size
     const newSocket = io(serverUrl, {
-      transports: ['websocket', 'polling'], // Allow both but prefer websocket
+      transports: ['websocket', 'polling'],
       upgrade: true,
       rememberUpgrade: true,
       timeout: 20000,
@@ -30,18 +28,11 @@ export const useGameState = () => {
       reconnectionDelay: 1000,
       reconnectionAttempts: 5,
       maxReconnectionAttempts: 5,
-      // Minimize headers
       extraHeaders: {},
-      // Disable cookies to reduce header size
       withCredentials: false,
-      // Optimize transport options
       transportOptions: {
-        polling: {
-          extraHeaders: {}
-        },
-        websocket: {
-          extraHeaders: {}
-        }
+        polling: { extraHeaders: {} },
+        websocket: { extraHeaders: {} }
       }
     });
 
@@ -52,6 +43,11 @@ export const useGameState = () => {
         ...prevState,
         connected: true
       }));
+      
+      // Request initial game state
+      setTimeout(() => {
+        newSocket.emit('requestGameState');
+      }, 500);
     });
 
     newSocket.on('connect_error', (error) => {
@@ -60,11 +56,6 @@ export const useGameState = () => {
         ...prevState,
         connected: false
       }));
-      if (error.message.includes('431') || error.message.includes('Request Header Fields Too Large')) {
-        console.log('Trying to reconnect with minimal headers...');
-        // Force websocket only on header size error
-        newSocket.io.opts.transports = ['websocket'];
-      }
     });
 
     newSocket.on('disconnect', (reason) => {
@@ -77,6 +68,7 @@ export const useGameState = () => {
 
     // Listen for game state updates
     newSocket.on('gameStateUpdate', (state) => {
+      console.log('Game state update received:', state);
       setGameState(prevState => ({
         ...prevState,
         ...state,
@@ -95,11 +87,22 @@ export const useGameState = () => {
 
     // Listen for new buy transactions
     newSocket.on('newBuy', (buyData) => {
+      console.log('New buy received:', buyData);
       setGameState(prevState => ({
         ...prevState,
         recentBuys: [buyData, ...prevState.recentBuys].slice(0, 50),
         timeLeft: buyData.newTimeLeft || prevState.timeLeft,
         pot: buyData.newPot || prevState.pot
+      }));
+    });
+
+    // Listen for new sell transactions
+    newSocket.on('newSell', (sellData) => {
+      console.log('New sell received:', sellData);
+      setGameState(prevState => ({
+        ...prevState,
+        recentBuys: [sellData, ...prevState.recentBuys].slice(0, 50),
+        timeLeft: sellData.newTimeLeft || prevState.timeLeft
       }));
     });
 
@@ -158,13 +161,6 @@ export const useGameState = () => {
     // Error handling
     newSocket.on('error', (error) => {
       console.error('Socket error:', error);
-    });
-
-    // Request initial game state after connection
-    newSocket.on('connect', () => {
-      setTimeout(() => {
-        newSocket.emit('requestGameState');
-      }, 500);
     });
 
     return () => {
