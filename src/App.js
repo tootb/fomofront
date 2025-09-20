@@ -7,6 +7,7 @@ import Winners from './components/Winners';
 import RoundInfo from './components/RoundInfo';
 import LevelProgress from './components/LevelProgress';
 import RulesModal from './components/RulesModal';
+import DotGrid from './components/DotGrid';
 import { useGameState } from './hooks/useGameState';
 import { GAME_CONFIG } from './utils/constants';
 
@@ -16,6 +17,21 @@ function App() {
 
   return (
     <div className="App">
+      {/* Background DotGrid */}
+      <div className="background-dotgrid">
+        <DotGrid
+          dotSize={10}
+          gap={15}
+          baseColor="#5227FF"
+          activeColor="#5227FF"
+          proximity={120}
+          shockRadius={250}
+          shockStrength={5}
+          resistance={750}
+          returnDuration={1.5}
+        />
+      </div>
+
       <div className="app-header">
         <h1 className="app-title">Pump FOMO 3D</h1>
         <div className="app-subtitle">Last 3 buyers take the pot</div>
@@ -28,8 +44,15 @@ function App() {
       </div>
 
       <div className="main-container">
+        {/* Left panel - ahora Level Requirements */}
         <div className="left-panel">
-          <Winners winners={gameState.winners} />
+          <LevelProgress 
+            currentRound={gameState.currentRound}
+            currentLevel={gameState.currentLevel}
+            gameStartTime={gameState.gameStartTime}
+            isActive={gameState.isActive}
+            currentLevelStartTime={gameState.currentLevelStartTime}
+          />
         </div>
 
         <div className="center-panel">
@@ -43,17 +66,11 @@ function App() {
             currentRound={gameState.currentRound}
             currentLevel={gameState.currentLevel}
           />
-          <LevelProgress 
-            currentRound={gameState.currentRound}
-            currentLevel={gameState.currentLevel}
-            gameStartTime={gameState.gameStartTime}
-            isActive={gameState.isActive}
-            currentLevelStartTime={gameState.currentLevelStartTime}
-          />
         </div>
 
+        {/* Right panel - ahora Winners */}
         <div className="right-panel">
-          <RecentBuys buys={gameState.recentBuys} />
+          <Winners winners={gameState.winners} />
         </div>
       </div>
 
@@ -69,6 +86,11 @@ function App() {
       {showRules && (
         <RulesModal onClose={() => setShowRules(false)} />
       )}
+
+      {/* Transactions panel - se mantiene donde estaba antes */}
+      <div className="transactions-panel">
+        <RecentBuys buys={gameState.recentBuys} />
+      </div>
     </div>
   );
 }
