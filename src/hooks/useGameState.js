@@ -16,10 +16,12 @@ export const useGameState = () => {
   });
 
   useEffect(() => {
-    const API_URL = process.env.REACT_APP_SERVER_URL || process.env.REACT_APP_API_URL || 'https://fomoback.vercel.app';
+    // Get API URL from environment variable or default to Render backend
+    const API_URL = process.env.REACT_APP_SERVER_URL || 'https://fomoback.onrender.com';
     
     console.log('🔗 Using real-time HTTP polling for game state');
     console.log('📡 API URL:', API_URL);
+    console.log('🌐 Environment:', process.env.NODE_ENV);
     
     const fetchGameState = async () => {
       try {
@@ -55,7 +57,7 @@ export const useGameState = () => {
       }
     };
 
-    // Keep-alive function cada 2 minutos
+    // Keep-alive function every 2 minutes to prevent Render from sleeping
     const keepAlive = async () => {
       try {
         const response = await fetch(`${API_URL}/keep-alive`, {
@@ -68,7 +70,7 @@ export const useGameState = () => {
         
         if (response.ok) {
           const data = await response.json();
-          console.log('🔄 Frontend keep-alive:', data.status, `uptime: ${Math.floor(data.uptime / 60)}min`);
+          console.log('🔄 Frontend keep-alive (Render):', data.status, `uptime: ${Math.floor(data.uptime / 60)}min`);
         }
       } catch (error) {
         console.error('❌ Keep-alive failed:', error.message);
@@ -76,27 +78,25 @@ export const useGameState = () => {
     };
 
     // Initial fetch
-    console.log('🚀 Starting real-time polling (1 second intervals)...');
+    console.log('🚀 Starting real-time polling (1 second intervals) for Render backend...');
     fetchGameState();
     
     // Initial keep-alive
     keepAlive();
     
-    // 🎯 CONFIGURACIÓN SOLICITADA:
-    
-    // Game state cada 1 SEGUNDO para timer real-time
+    // Game state polling every 1 SECOND for real-time updates
     const gameStateInterval = setInterval(() => {
       fetchGameState();
     }, 1000);
     
-    // Keep-alive cada 2 MINUTOS para evitar sleep
+    // Keep-alive every 2 MINUTES to prevent backend from sleeping
     const keepAliveInterval = setInterval(() => {
       keepAlive();
     }, 2 * 60 * 1000);
     
-    // Cleanup
+    // Cleanup function
     return () => {
-      console.log('🧹 Cleaning up real-time polling intervals');
+      console.log('🧹 Cleaning up polling intervals');
       clearInterval(gameStateInterval);
       clearInterval(keepAliveInterval);
     };

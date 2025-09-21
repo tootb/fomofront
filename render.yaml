@@ -1,0 +1,14 @@
+services:
+  - type: web
+    name: fomo-frontend
+    env: node
+    plan: free
+    buildCommand: npm install && npm run build
+    startCommand: node server.js
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: PORT
+        value: 10000
+      - key: REACT_APP_SERVER_URL
+        value: https://fomoback.onrender.com
