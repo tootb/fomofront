@@ -18,7 +18,7 @@ export const useGameState = () => {
   useEffect(() => {
     const API_URL = process.env.REACT_APP_SERVER_URL || process.env.REACT_APP_API_URL || 'https://fomoback.vercel.app';
     
-    console.log('🔗 Using HTTP polling for game state');
+    console.log('🔗 Using optimized HTTP polling for game state');
     console.log('📡 API URL:', API_URL);
     
     const fetchGameState = async () => {
@@ -33,18 +33,6 @@ export const useGameState = () => {
         
         if (response.ok) {
           const data = await response.json();
-          console.log('📊 Game state received:', {
-            connected: true,
-            round: data.currentRound,
-            level: data.currentLevel,
-            pot: data.pot,
-            recentBuys: data.recentBuys?.length || 0,
-            isActive: data.isActive,
-            waitingForFirstBuy: data.waitingForFirstBuy,
-            gameStartTime: data.gameStartTime,
-            currentLevelStartTime: data.currentLevelStartTime,
-            timeLeft: Math.floor(data.timeLeft / 1000) + 's'
-          });
           
           setGameState(prevState => ({
             ...prevState,
@@ -67,7 +55,7 @@ export const useGameState = () => {
       }
     };
 
-    // Keep-alive function to prevent Vercel from sleeping
+    // Keep-alive function - MENOS FRECUENTE
     const keepAlive = async () => {
       try {
         const response = await fetch(`${API_URL}/keep-alive`, {
@@ -80,75 +68,37 @@ export const useGameState = () => {
         
         if (response.ok) {
           const data = await response.json();
-          console.log('🔄 Keep-alive response:', {
-            status: data.status,
-            uptime: Math.floor(data.uptime / 60) + 'min',
-            gameActive: data.gameActive,
-            currentRound: data.currentRound,
-            timeLeft: data.timeLeft
-          });
+          console.log('🔄 Keep-alive:', data.status, `uptime: ${Math.floor(data.uptime / 60)}min`);
         }
       } catch (error) {
         console.error('❌ Keep-alive failed:', error.message);
       }
     };
 
-    // Function to check pot status
-    const fetchPotStatus = async () => {
-      try {
-        const response = await fetch(`${API_URL}/api/pot-status`, {
-          method: 'GET',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          cache: 'no-cache'
-        });
-        
-        if (response.ok) {
-          const data = await response.json();
-          console.log('💰 Pot status:', data.currentPot, 'SOL');
-          
-          setGameState(prevState => ({
-            ...prevState,
-            pot: data.currentPot
-          }));
-        }
-      } catch (error) {
-        console.error('❌ Error fetching pot status:', error.message);
-      }
-    };
-
     // Initial fetch
-    console.log('🚀 Starting initial game state fetch...');
+    console.log('🚀 Starting optimized polling...');
     fetchGameState();
     
     // Initial keep-alive
     keepAlive();
     
-    // Fetch pot status separately
-    fetchPotStatus();
+    // ✅ POLLING OPTIMIZADO - NO MÁS SPAM
     
-    // Poll game state every 1 second for real-time timer and transactions
+    // Game state cada 3 segundos (suficiente para timer smooth)
     const gameStateInterval = setInterval(() => {
       fetchGameState();
-    }, 1000);
+    }, 3000);
     
-    // Keep-alive every 2 minutes to prevent Vercel sleep
+    // Keep-alive cada 4 minutos para evitar sleep
     const keepAliveInterval = setInterval(() => {
       keepAlive();
-    }, 2 * 60 * 1000);
-    
-    // Poll pot status every 3 minutes
-    const potStatusInterval = setInterval(() => {
-      fetchPotStatus();
-    }, 3 * 60 * 1000);
+    }, 4 * 60 * 1000);
     
     // Cleanup
     return () => {
-      console.log('🧹 Cleaning up HTTP polling intervals');
+      console.log('🧹 Cleaning up optimized polling intervals');
       clearInterval(gameStateInterval);
       clearInterval(keepAliveInterval);
-      clearInterval(potStatusInterval);
     };
   }, []);
 
