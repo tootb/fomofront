@@ -14,7 +14,7 @@ export const MAX_TIME = 24 * 60 * 60 * 1000; // 24 hours max
 export const MIN_TIME = 5 * 60 * 1000; // 5 minutes minimum
 export const TIME_ADDITION = 30 * 1000; // 30 seconds in milliseconds
 
-// Round 1 level configuration
+// Round 1 level configuration - NOW USED FOR ALL ROUNDS
 export const ROUND_1_LEVELS = [
   { level: 1, requirement: 0.1, duration: 2 }, // 2 hours
   { level: 2, requirement: 0.2, duration: 2 }, // 2 hours  
@@ -27,14 +27,17 @@ export const ROUND_1_LEVELS = [
   { level: 9, requirement: 20.0, duration: Infinity } // Until timer ends
 ];
 
-// Round 2+ level configuration
+// Round 2+ level configuration - SAME AS ROUND 1 NOW
 export const ROUND_N_LEVELS = [
-  { level: 1, requirement: 1.0, duration: 5 }, // 5 hours
-  { level: 2, requirement: 2.0, duration: 5 }, // 5 hours
-  { level: 3, requirement: 5.0, duration: 12 }, // 12 hours
-  { level: 4, requirement: 10.0, duration: 12 }, // 12 hours
-  { level: 5, requirement: 15.0, duration: 12 }, // 12 hours
-  { level: 6, requirement: 20.0, duration: Infinity } // Until timer ends
+  { level: 1, requirement: 0.1, duration: 2 }, // 2 hours
+  { level: 2, requirement: 0.2, duration: 2 }, // 2 hours  
+  { level: 3, requirement: 0.5, duration: 2 }, // 2 hours
+  { level: 4, requirement: 1.0, duration: 5 }, // 5 hours
+  { level: 5, requirement: 2.0, duration: 5 }, // 5 hours
+  { level: 6, requirement: 5.0, duration: 12 }, // 12 hours
+  { level: 7, requirement: 10.0, duration: 12 }, // 12 hours
+  { level: 8, requirement: 15.0, duration: 12 }, // 12 hours
+  { level: 9, requirement: 20.0, duration: Infinity } // Until timer ends
 ];
 
 // Winner distribution percentages

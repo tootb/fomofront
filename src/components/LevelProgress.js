@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { ROUND_1_LEVELS, ROUND_N_LEVELS } from '../utils/constants';
+import { ROUND_1_LEVELS } from '../utils/constants';
 
 const LevelProgress = ({ currentRound, currentLevel, gameStartTime, isActive, currentLevelStartTime }) => {
   const [timeToNextLevel, setTimeToNextLevel] = useState(null);
@@ -22,7 +22,8 @@ const LevelProgress = ({ currentRound, currentLevel, gameStartTime, isActive, cu
 
   useEffect(() => {
     const getLevels = () => {
-      return currentRound === 1 ? ROUND_1_LEVELS : ROUND_N_LEVELS;
+      // Always use ROUND_1_LEVELS for all rounds
+      return ROUND_1_LEVELS;
     };
 
     const calculateTimeToNextLevel = () => {
@@ -94,7 +95,8 @@ const LevelProgress = ({ currentRound, currentLevel, gameStartTime, isActive, cu
     return () => clearInterval(interval);
   }, [gameStartTime, currentRound, isActive, currentLevelStartTime, currentLevel]);
 
-  const levels = currentRound === 1 ? ROUND_1_LEVELS : ROUND_N_LEVELS;
+  // Always use ROUND_1_LEVELS for all rounds
+  const levels = ROUND_1_LEVELS;
   const currentLevelIndex = currentLevel - 1;
 
   const getNextLevelNumber = () => {

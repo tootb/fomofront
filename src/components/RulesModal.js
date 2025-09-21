@@ -56,7 +56,7 @@ const RulesModal = ({ onClose }) => {
           This wallet is checked every 5 minutes to display the exact amount of SOL available as prize.
         </p>
         <p>
-          <strong>70% of pump.fun fees</strong> go to the POT and <strong>30% for buy and burns</strong>.
+          <strong>70% of pump.fun fees</strong> go to the POT and <strong>30% for buyback, burn, and team</strong>.
         </p>
 
         <h3>🏆 Winner System</h3>
@@ -67,20 +67,17 @@ const RulesModal = ({ onClose }) => {
         </ul>
 
         <h3>📊 Levels and Requirements</h3>
-        <p><strong>Round 1:</strong></p>
+        <p><strong>All Rounds:</strong></p>
         <ul>
           <li>Level 1: 0.1 SOL minimum (2 hours)</li>
           <li>Level 2: 0.2 SOL minimum (2 hours)</li>
           <li>Level 3: 0.5 SOL minimum (2 hours)</li>
           <li>Level 4: 1.0 SOL minimum (5 hours)</li>
-          <li>Level 5+: Higher requirements...</li>
-        </ul>
-
-        <p><strong>Rounds 2+:</strong></p>
-        <ul>
-          <li>Level 1: 1.0 SOL minimum (5 hours)</li>
-          <li>Level 2: 2.0 SOL minimum (5 hours)</li>
-          <li>Level 3+: Progressive requirements...</li>
+          <li>Level 5: 2.0 SOL minimum (5 hours)</li>
+          <li>Level 6: 5.0 SOL minimum (12 hours)</li>
+          <li>Level 7: 10.0 SOL minimum (12 hours)</li>
+          <li>Level 8: 15.0 SOL minimum (12 hours)</li>
+          <li>Level 9+: 20.0 SOL minimum (until timer ends)</li>
         </ul>
 
         <h3>⚡ Valid Transactions</h3>
@@ -104,8 +101,10 @@ const RulesModal = ({ onClose }) => {
 
         <h3>🎲 Strategy</h3>
         <p>
-          <strong>Do you buy early to participate longer, or wait until the end to be the last buyer?</strong> 
-          The choice is yours, but remember that each purchase extends the countdown!
+          <strong>The strategy is either to wait and fight to be one of the last 3 buyers, or buy before we level up since higher levels will bring bigger buys in the fight to be the last, which will send the token price much higher!</strong> 
+        </p>
+        <p>
+          Do you buy early to participate longer, or wait until the end to be the last buyer? The choice is yours, but remember that each purchase extends the countdown!
         </p>
       </div>
     </div>
