@@ -18,7 +18,7 @@ export const useGameState = () => {
   useEffect(() => {
     const API_URL = process.env.REACT_APP_SERVER_URL || process.env.REACT_APP_API_URL || 'https://fomoback.vercel.app';
     
-    console.log('🔗 Using optimized HTTP polling for game state');
+    console.log('🔗 Using real-time HTTP polling for game state');
     console.log('📡 API URL:', API_URL);
     
     const fetchGameState = async () => {
@@ -55,7 +55,7 @@ export const useGameState = () => {
       }
     };
 
-    // Keep-alive function - MENOS FRECUENTE
+    // Keep-alive function cada 2 minutos
     const keepAlive = async () => {
       try {
         const response = await fetch(`${API_URL}/keep-alive`, {
@@ -68,7 +68,7 @@ export const useGameState = () => {
         
         if (response.ok) {
           const data = await response.json();
-          console.log('🔄 Keep-alive:', data.status, `uptime: ${Math.floor(data.uptime / 60)}min`);
+          console.log('🔄 Frontend keep-alive:', data.status, `uptime: ${Math.floor(data.uptime / 60)}min`);
         }
       } catch (error) {
         console.error('❌ Keep-alive failed:', error.message);
@@ -76,27 +76,27 @@ export const useGameState = () => {
     };
 
     // Initial fetch
-    console.log('🚀 Starting optimized polling...');
+    console.log('🚀 Starting real-time polling (1 second intervals)...');
     fetchGameState();
     
     // Initial keep-alive
     keepAlive();
     
-    // ✅ POLLING OPTIMIZADO - NO MÁS SPAM
+    // 🎯 CONFIGURACIÓN SOLICITADA:
     
-    // Game state cada 3 segundos (suficiente para timer smooth)
+    // Game state cada 1 SEGUNDO para timer real-time
     const gameStateInterval = setInterval(() => {
       fetchGameState();
-    }, 3000);
+    }, 1000);
     
-    // Keep-alive cada 4 minutos para evitar sleep
+    // Keep-alive cada 2 MINUTOS para evitar sleep
     const keepAliveInterval = setInterval(() => {
       keepAlive();
-    }, 4 * 60 * 1000);
+    }, 2 * 60 * 1000);
     
     // Cleanup
     return () => {
-      console.log('🧹 Cleaning up optimized polling intervals');
+      console.log('🧹 Cleaning up real-time polling intervals');
       clearInterval(gameStateInterval);
       clearInterval(keepAliveInterval);
     };
