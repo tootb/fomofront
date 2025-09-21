@@ -7,8 +7,8 @@ export const useGameState = () => {
     waitingForFirstBuy: true, // Waiting for first buy
     currentRound: 1,
     currentLevel: 1,
-    currentLevelStartTime: null, // Add this field
-    pot: 0, // This comes from wallet balance now
+    currentLevelStartTime: null,
+    pot: 0,
     recentBuys: [],
     winners: {},
     gameStartTime: Date.now(),
@@ -43,7 +43,7 @@ export const useGameState = () => {
             waitingForFirstBuy: data.waitingForFirstBuy,
             gameStartTime: data.gameStartTime,
             currentLevelStartTime: data.currentLevelStartTime,
-            timeLeft: data.timeLeft
+            timeLeft: Math.floor(data.timeLeft / 1000) + 's'
           });
           
           setGameState(prevState => ({
@@ -67,7 +67,33 @@ export const useGameState = () => {
       }
     };
 
-    // Additional function to check pot status
+    // Keep-alive function to prevent Vercel from sleeping
+    const keepAlive = async () => {
+      try {
+        const response = await fetch(`${API_URL}/keep-alive`, {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          cache: 'no-cache'
+        });
+        
+        if (response.ok) {
+          const data = await response.json();
+          console.log('🔄 Keep-alive response:', {
+            status: data.status,
+            uptime: Math.floor(data.uptime / 60) + 'min',
+            gameActive: data.gameActive,
+            currentRound: data.currentRound,
+            timeLeft: data.timeLeft
+          });
+        }
+      } catch (error) {
+        console.error('❌ Keep-alive failed:', error.message);
+      }
+    };
+
+    // Function to check pot status
     const fetchPotStatus = async () => {
       try {
         const response = await fetch(`${API_URL}/api/pot-status`, {
@@ -96,7 +122,10 @@ export const useGameState = () => {
     console.log('🚀 Starting initial game state fetch...');
     fetchGameState();
     
-    // Fetch pot status separately (less frequent)
+    // Initial keep-alive
+    keepAlive();
+    
+    // Fetch pot status separately
     fetchPotStatus();
     
     // Poll game state every 1 second for real-time timer and transactions
@@ -104,15 +133,21 @@ export const useGameState = () => {
       fetchGameState();
     }, 1000);
     
-    // Poll pot status every 2 minutes (less frequent since it updates every 5 minutes on backend)
+    // Keep-alive every 2 minutes to prevent Vercel sleep
+    const keepAliveInterval = setInterval(() => {
+      keepAlive();
+    }, 2 * 60 * 1000);
+    
+    // Poll pot status every 3 minutes
     const potStatusInterval = setInterval(() => {
       fetchPotStatus();
-    }, 2 * 60 * 1000);
+    }, 3 * 60 * 1000);
     
     // Cleanup
     return () => {
       console.log('🧹 Cleaning up HTTP polling intervals');
       clearInterval(gameStateInterval);
+      clearInterval(keepAliveInterval);
       clearInterval(potStatusInterval);
     };
   }, []);
