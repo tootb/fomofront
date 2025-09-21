@@ -536,50 +536,39 @@ body {
 /* Mobile Responsive Design */
 @media (max-width: 1200px) {
   .main-container {
-    grid-template-columns: 1fr;
+    display: flex;
+    flex-direction: column;
     gap: 0.5rem;
-    justify-items: center;
-    text-align: center;
     padding: 1rem;
+    align-items: center;
   }
   
-  /* Mobile order: POT, TIMER, RECENT TRANSACTIONS, WINNERS, LEVEL REQUIREMENTS */
+  /* Mobile order: POT(1), TIMER(2), RECENT TRANSACTIONS(3), WINNERS(4), LEVEL REQUIREMENTS(5) */
+  .mobile-order-1 { order: 1; }
+  .mobile-order-2 { order: 2; }
+  .mobile-order-3 { order: 3; }
+  .mobile-order-4 { order: 4; }
+  .mobile-order-5 { order: 5; }
+  
   .center-panel {
     order: 1;
     display: flex;
     flex-direction: column;
     gap: 0.5rem;
-  }
-  
-  .pot-display {
-    order: 1;
-  }
-  
-  .timer-container {
-    order: 2;
-  }
-  
-  .right-panel {
-    order: 3;
     width: 100%;
     max-width: 400px;
-    margin: 0 auto;
+  }
+  
+  .left-panel, .right-panel {
+    width: 100%;
+    max-width: 400px;
     padding: 1rem;
   }
   
-  .winners-center {
-    order: 4;
+  .winners-panel {
     width: 100%;
     max-width: 400px;
-    margin: 0 auto;
-  }
-  
-  .left-panel {
-    order: 5;
-    width: 100%;
-    max-width: 400px;
-    margin: 0 auto;
-    padding: 1rem;
+    padding: 0;
   }
   
   .app-title {

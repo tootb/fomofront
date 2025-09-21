@@ -29,7 +29,7 @@ function App() {
       <Squares 
         direction="diagonal"
         speed={0.5}
-        borderColor="rgba(255, 255, 255, 0.15)"
+        borderColor="rgba(255, 255, 255, 0.2)"
         squareSize={50}
         hoverFillColor="rgba(0, 255, 255, 0.1)"
       />
@@ -46,8 +46,8 @@ function App() {
       </div>
 
       <div className="main-container">
-        {/* Left panel - Level Requirements */}
-        <div className="left-panel">
+        {/* Mobile order will be handled by CSS */}
+        <div className="left-panel mobile-order-5">
           <LevelProgress 
             currentRound={gameState.currentRound}
             currentLevel={gameState.currentLevel}
@@ -57,19 +57,27 @@ function App() {
           />
         </div>
 
-        <div className="center-panel">
-          <PotDisplay pot={gameState.pot} />
-          <Timer 
-            timeLeft={gameState.timeLeft}
-            isActive={gameState.isActive}
-            waitingForFirstBuy={gameState.waitingForFirstBuy}
-          />
-          <Winners winners={gameState.winners} />
+        <div className="center-panel mobile-order-1-2">
+          <div className="mobile-order-1">
+            <PotDisplay pot={gameState.pot} />
+          </div>
+          <div className="mobile-order-2">
+            <Timer 
+              timeLeft={gameState.timeLeft}
+              isActive={gameState.isActive}
+              waitingForFirstBuy={gameState.waitingForFirstBuy}
+            />
+          </div>
         </div>
 
         {/* Right panel - Recent Transactions */}
-        <div className="right-panel">
+        <div className="right-panel mobile-order-3">
           <RecentBuys buys={gameState.recentBuys} />
+        </div>
+
+        {/* Winners panel - separate for mobile ordering */}
+        <div className="winners-panel mobile-order-4">
+          <Winners winners={gameState.winners} />
         </div>
       </div>
 
