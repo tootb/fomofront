@@ -44,7 +44,7 @@ function App() {
       </div>
 
       <div className="main-container">
-        {/* Left panel - ahora Level Requirements */}
+        {/* Left panel - Level Requirements */}
         <div className="left-panel">
           <LevelProgress 
             currentRound={gameState.currentRound}
@@ -62,15 +62,13 @@ function App() {
             isActive={gameState.isActive}
             waitingForFirstBuy={gameState.waitingForFirstBuy}
           />
-          <RoundInfo 
-            currentRound={gameState.currentRound}
-            currentLevel={gameState.currentLevel}
-          />
+          {/* Winners ahora va aquí donde estaba RoundInfo */}
+          <Winners winners={gameState.winners} />
         </div>
 
-        {/* Right panel - ahora Winners */}
+        {/* Right panel - Recent Transactions (vuelve a su lugar original) */}
         <div className="right-panel">
-          <Winners winners={gameState.winners} />
+          <RecentBuys buys={gameState.recentBuys} />
         </div>
       </div>
 
@@ -86,11 +84,6 @@ function App() {
       {showRules && (
         <RulesModal onClose={() => setShowRules(false)} />
       )}
-
-      {/* Transactions panel - se mantiene donde estaba antes */}
-      <div className="transactions-panel">
-        <RecentBuys buys={gameState.recentBuys} />
-      </div>
     </div>
   );
 }

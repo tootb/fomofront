@@ -46,86 +46,44 @@ const Winners = ({ winners = {} }) => {
   };
 
   return (
-    <div className="winners-panel">
+    <div className="winners-center">
       <h3>🏆 Winners by Round</h3>
-      <div className="winners-list">
+      <div className="winners-center-content">
         {Object.keys(winners).length === 0 ? (
-          <div style={{ 
-            textAlign: 'center', 
-            color: 'rgba(255, 255, 255, 0.5)', 
-            padding: '2rem'
-          }}>
+          <div className="no-winners">
             No winners yet
           </div>
         ) : (
           Object.entries(winners)
             .sort(([a], [b]) => parseInt(b) - parseInt(a)) // Sort by round desc
+            .slice(0, 2) // Show only last 2 rounds to save space
             .map(([round, roundWinners]) => (
-              <div key={round} className="round-winners">
-                <h4 style={{ 
-                  color: '#ff00ff', 
-                  marginBottom: '1rem',
-                  borderBottom: '1px solid rgba(255, 0, 255, 0.3)',
-                  paddingBottom: '0.5rem'
-                }}>
+              <div key={round} className="round-winners-compact">
+                <h4 className="round-title">
                   Round {round}
                 </h4>
-                {roundWinners && roundWinners.map((winner, index) => (
-                  <div key={winner.txHash || index} className="winner-item">
-                    <div style={{ 
-                      display: 'flex', 
-                      justifyContent: 'space-between',
-                      alignItems: 'center',
-                      marginBottom: '0.5rem'
-                    }}>
-                      <span style={{ color: '#ffd700', fontWeight: 'bold' }}>
+                <div className="winners-grid">
+                  {roundWinners && roundWinners.slice(0, 3).map((winner, index) => (
+                    <div key={winner.txHash || index} className="winner-compact">
+                      <div className="winner-place">
                         {getWinnerPlace(index)}
-                      </span>
-                      <span style={{ color: '#00ff00' }}>
-                        {getWinnerPercentage(index)}
-                      </span>
-                    </div>
-                    <div className="winner-amount">
-                      {formatAmount(winner.amount)} SOL
-                    </div>
-                    <div className="winner-wallet">
-                      {formatWallet(winner.wallet)}
-                    </div>
-                    <div className="winner-time">
-                      {moment(winner.timestamp).format('MM/DD HH:mm:ss')}
-                    </div>
-                    <div 
-                      className={`winner-tx ${isTxClickable(winner.txHash) ? 'clickable' : ''}`}
-                      onClick={() => isTxClickable(winner.txHash) && openSolscanLink(winner.txHash)}
-                      style={{
-                        cursor: isTxClickable(winner.txHash) ? 'pointer' : 'default',
-                        opacity: isTxClickable(winner.txHash) ? 1 : 0.6
-                      }}
-                      title={isTxClickable(winner.txHash) ? 'Click to view on Solscan' : 'Transaction not available on explorer'}
-                    >
-                      TX: {formatTxHash(winner.txHash)}
-                      {isTxClickable(winner.txHash) && (
-                        <span style={{ 
-                          marginLeft: '0.5rem', 
-                          fontSize: '0.6rem',
-                          opacity: 0.8
-                        }}>
-                          🔗
-                        </span>
-                      )}
-                    </div>
-                    {winner.prize && (
-                      <div style={{ 
-                        fontSize: '0.8rem', 
-                        color: '#00ff88',
-                        fontWeight: 'bold',
-                        marginTop: '0.5rem'
-                      }}>
-                        Prize: {formatAmount(winner.prize)} SOL
                       </div>
-                    )}
-                  </div>
-                ))}
+                      <div className="winner-details">
+                        <div className="winner-amount-compact">
+                          {formatAmount(winner.amount)} SOL
+                        </div>
+                        <div className="winner-wallet-compact">
+                          {formatWallet(winner.wallet)}
+                        </div>
+                        {winner.prize && (
+                          <div className="winner-prize">
+                            Prize: {formatAmount(winner.prize)} SOL
+                          </div>
+                        )}
+                      </div>
+                    </div>
+                  ))}
+                </div>
               </div>
             ))
         )}
