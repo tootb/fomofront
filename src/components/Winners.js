@@ -11,11 +11,28 @@ const Winners = ({ winners = {} }) => {
 
   const getWinnerPlace = (position) => {
     switch(position) {
-      case 0: return '🥇 1st';
-      case 1: return '🥈 2nd';
-      case 2: return '🥉 3rd';
-      default: return `${position + 1}th`;
+      case 1: return '🥇 1st';
+      case 2: return '🥈 2nd';
+      case 3: return '🥉 3rd';
+      default: return `${position}th`;
     }
+  };
+
+  const openSolscanLink = (txHash) => {
+    if (txHash && !txHash.includes('simulated') && txHash !== 'unknown') {
+      const url = `https://solscan.io/tx/${txHash}`;
+      window.open(url, '_blank', 'noopener,noreferrer');
+    }
+  };
+
+  const formatTxHash = (txHash) => {
+    if (!txHash || txHash === 'unknown') return 'N/A';
+    if (txHash.includes('simulated')) return 'Simulated';
+    return `${txHash.slice(0, 8)}...`;
+  };
+
+  const isTxClickable = (txHash) => {
+    return txHash && !txHash.includes('simulated') && txHash !== 'unknown';
   };
 
   return (
@@ -39,7 +56,7 @@ const Winners = ({ winners = {} }) => {
                   {roundWinners && roundWinners.slice(0, 3).map((winner, index) => (
                     <div key={winner.txHash || index} className="winner-compact">
                       <div className="winner-place">
-                        {getWinnerPlace(index)}
+                        {getWinnerPlace(winner.place || (index + 1))}
                       </div>
                       <div className="winner-details">
                         <div className="winner-amount-compact">
@@ -50,9 +67,31 @@ const Winners = ({ winners = {} }) => {
                         </div>
                         {winner.prize && (
                           <div className="winner-prize">
-                            Prize: {formatAmount(winner.prize)} SOL
+                            Prize: {formatAmount(winner.prize)} SOL ({winner.percentage}%)
                           </div>
                         )}
+                        <div 
+                          className={`winner-tx ${isTxClickable(winner.txHash) ? 'clickable' : ''}`}
+                          onClick={() => isTxClickable(winner.txHash) && openSolscanLink(winner.txHash)}
+                          style={{
+                            cursor: isTxClickable(winner.txHash) ? 'pointer' : 'default',
+                            opacity: isTxClickable(winner.txHash) ? 1 : 0.6,
+                            fontSize: '0.7rem',
+                            color: isTxClickable(winner.txHash) ? '#00ffff' : '#888',
+                            marginTop: '0.2rem'
+                          }}
+                          title={isTxClickable(winner.txHash) ? 'Click to view winning transaction on Solscan' : 'Transaction not available on explorer'}
+                        >
+                          TX: {formatTxHash(winner.txHash)}
+                          {isTxClickable(winner.txHash) && (
+                            <span style={{ 
+                              marginLeft: '0.3rem', 
+                              fontSize: '0.6rem'
+                            }}>
+                              🔗
+                            </span>
+                          )}
+                        </div>
                       </div>
                     </div>
                   ))}
