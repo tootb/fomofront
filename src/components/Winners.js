@@ -1,5 +1,4 @@
 import React from 'react';
-import moment from 'moment';
 
 const Winners = ({ winners = {} }) => {
   const formatWallet = (wallet) => {
@@ -10,15 +9,6 @@ const Winners = ({ winners = {} }) => {
     return parseFloat(amount || 0).toFixed(2);
   };
 
-  const getWinnerPercentage = (position) => {
-    switch(position) {
-      case 0: return '70%'; // 1st place
-      case 1: return '20%'; // 2nd place  
-      case 2: return '10%'; // 3rd place
-      default: return '0%';
-    }
-  };
-
   const getWinnerPlace = (position) => {
     switch(position) {
       case 0: return '🥇 1st';
@@ -26,23 +16,6 @@ const Winners = ({ winners = {} }) => {
       case 2: return '🥉 3rd';
       default: return `${position + 1}th`;
     }
-  };
-
-  const openSolscanLink = (txHash) => {
-    if (txHash && !txHash.includes('simulated')) {
-      const url = `https://solscan.io/tx/${txHash}`;
-      window.open(url, '_blank', 'noopener,noreferrer');
-    }
-  };
-
-  const formatTxHash = (txHash) => {
-    if (!txHash) return 'N/A';
-    if (txHash.includes('simulated')) return 'Simulated';
-    return `${txHash.slice(0, 8)}...`;
-  };
-
-  const isTxClickable = (txHash) => {
-    return txHash && !txHash.includes('simulated');
   };
 
   return (

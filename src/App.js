@@ -4,7 +4,6 @@ import Timer from './components/Timer';
 import PotDisplay from './components/PotDisplay';
 import RecentBuys from './components/RecentBuys';
 import Winners from './components/Winners';
-import RoundInfo from './components/RoundInfo';
 import LevelProgress from './components/LevelProgress';
 import RulesModal from './components/RulesModal';
 import DotGrid from './components/DotGrid';
