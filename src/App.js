@@ -29,9 +29,9 @@ function App() {
       <Squares 
         direction="diagonal"
         speed={0.5}
-        borderColor="rgba(0, 255, 255, 0.1)"
+        borderColor="rgba(255, 255, 255, 0.15)"
         squareSize={50}
-        hoverFillColor="rgba(0, 255, 255, 0.05)"
+        hoverFillColor="rgba(0, 255, 255, 0.1)"
       />
       
       <div className="app-header">
