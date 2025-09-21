@@ -6,7 +6,6 @@ import RecentBuys from './components/RecentBuys';
 import Winners from './components/Winners';
 import LevelProgress from './components/LevelProgress';
 import RulesModal from './components/RulesModal';
-import DotGrid from './components/DotGrid';
 import { useGameState } from './hooks/useGameState';
 import { GAME_CONFIG } from './utils/constants';
 
@@ -16,21 +15,6 @@ function App() {
 
   return (
     <div className="App">
-      {/* Background DotGrid */}
-      <div className="background-dotgrid">
-        <DotGrid
-          dotSize={10}
-          gap={15}
-          baseColor="#5227FF"
-          activeColor="#5227FF"
-          proximity={120}
-          shockRadius={250}
-          shockStrength={5}
-          resistance={750}
-          returnDuration={1.5}
-        />
-      </div>
-
       <div className="app-header">
         <h1 className="app-title">Pump FOMO 3D</h1>
         <div className="app-subtitle">Last 3 buyers take the pot</div>
@@ -61,11 +45,10 @@ function App() {
             isActive={gameState.isActive}
             waitingForFirstBuy={gameState.waitingForFirstBuy}
           />
-          {/* Winners ahora va aquí donde estaba RoundInfo */}
           <Winners winners={gameState.winners} />
         </div>
 
-        {/* Right panel - Recent Transactions (vuelve a su lugar original) */}
+        {/* Right panel - Recent Transactions */}
         <div className="right-panel">
           <RecentBuys buys={gameState.recentBuys} />
         </div>

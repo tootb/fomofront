@@ -18,32 +18,18 @@ body {
   min-height: 100vh;
   display: flex;
   flex-direction: column;
-  position: relative;
   background: 
-    radial-gradient(circle at 20% 80%, rgba(120, 119, 198, 0.2) 0%, transparent 50%),
-    radial-gradient(circle at 80% 20%, rgba(255, 119, 198, 0.1) 0%, transparent 50%);
-}
-
-/* Background DotGrid - MEJORADO PARA SER MÁS VISIBLE */
-.background-dotgrid {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
-  z-index: 0; /* Cambié de -1 a 0 */
-  opacity: 0.6; /* Aumenté de 0.3 a 0.6 */
-  pointer-events: auto; /* Cambié de none a auto para interactividad */
+    radial-gradient(circle at 20% 80%, rgba(120, 119, 198, 0.3) 0%, transparent 50%),
+    radial-gradient(circle at 80% 20%, rgba(255, 119, 198, 0.15) 0%, transparent 50%);
 }
 
 .app-header {
   text-align: center;
   padding: 2rem 0;
   border-bottom: 2px solid rgba(0, 255, 255, 0.3);
-  background: rgba(0, 0, 0, 0.7); /* Aumenté la opacidad del fondo */
+  background: rgba(0, 0, 0, 0.3);
   backdrop-filter: blur(10px);
   position: relative;
-  z-index: 2; /* Aumenté el z-index */
 }
 
 .app-title {
@@ -79,7 +65,6 @@ body {
   font-weight: 700;
   cursor: pointer;
   transition: all 0.3s ease;
-  z-index: 3;
 }
 
 .rules-button:hover {
@@ -98,18 +83,16 @@ body {
   margin: 0 auto;
   width: 100%;
   min-height: calc(100vh - 200px);
-  position: relative;
-  z-index: 2; /* Aumenté el z-index */
 }
 
 .left-panel, .right-panel {
-  background: rgba(0, 0, 0, 0.4); /* Fondo más oscuro para contraste */
+  background: rgba(255, 255, 255, 0.05);
   border: 1px solid rgba(0, 255, 255, 0.3);
   border-radius: 15px;
   padding: 1.5rem;
-  backdrop-filter: blur(15px); /* Más blur */
+  backdrop-filter: blur(10px);
   box-shadow: 
-    0 8px 32px rgba(0, 0, 0, 0.5),
+    0 8px 32px rgba(0, 0, 0, 0.3),
     inset 0 1px 0 rgba(255, 255, 255, 0.1);
   display: flex;
   flex-direction: column;
@@ -125,13 +108,12 @@ body {
 }
 
 .pot-display {
-  background: radial-gradient(circle, rgba(255, 215, 0, 0.3) 0%, rgba(255, 165, 0, 0.2) 100%);
+  background: radial-gradient(circle, rgba(255, 215, 0, 0.2) 0%, rgba(255, 165, 0, 0.1) 100%);
   border: 2px solid #ffd700;
   border-radius: 20px;
   padding: 2rem;
   text-align: center;
   min-width: 300px;
-  backdrop-filter: blur(10px);
   box-shadow: 
     0 0 50px rgba(255, 215, 0, 0.3),
     inset 0 1px 0 rgba(255, 255, 255, 0.2);
@@ -159,13 +141,12 @@ body {
 }
 
 .timer-container {
-  background: rgba(0, 0, 0, 0.6); /* Fondo más oscuro */
+  background: rgba(0, 0, 0, 0.4);
   border: 3px solid #00ffff;
   border-radius: 25px;
   padding: 3rem;
   text-align: center;
   min-width: 400px;
-  backdrop-filter: blur(15px);
   box-shadow: 
     0 0 60px rgba(0, 255, 255, 0.4),
     inset 0 2px 0 rgba(255, 255, 255, 0.1);
@@ -187,15 +168,14 @@ body {
   letter-spacing: 3px;
 }
 
-/* Winners Center - New compact version */
+/* Winners Center */
 .winners-center {
-  background: rgba(0, 0, 0, 0.4); /* Fondo más oscuro */
-  border: 1px solid rgba(255, 0, 255, 0.4);
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 0, 255, 0.3);
   border-radius: 15px;
   padding: 1.5rem;
   min-width: 400px;
   max-height: 300px;
-  backdrop-filter: blur(15px);
 }
 
 .winners-center h3 {
@@ -237,15 +217,15 @@ body {
 .winner-compact {
   display: flex;
   align-items: center;
-  background: rgba(255, 255, 255, 0.08);
-  border: 1px solid rgba(255, 255, 255, 0.15);
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
   border-radius: 8px;
   padding: 0.8rem;
   transition: all 0.3s ease;
 }
 
 .winner-compact:hover {
-  background: rgba(255, 255, 255, 0.15);
+  background: rgba(255, 255, 255, 0.1);
   border-color: #ff00ff;
 }
 
@@ -280,8 +260,8 @@ body {
 }
 
 .level-progress {
-  background: rgba(0, 0, 0, 0.4); /* Fondo más oscuro */
-  border: 1px solid rgba(255, 255, 0, 0.3);
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.2);
   border-radius: 15px;
   padding: 1.5rem;
   min-width: 300px;
@@ -348,8 +328,8 @@ body {
 }
 
 .buy-item {
-  background: rgba(255, 255, 255, 0.08);
-  border: 1px solid rgba(255, 255, 255, 0.15);
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
   border-radius: 10px;
   padding: 1rem;
   margin-bottom: 0.5rem;
@@ -357,7 +337,7 @@ body {
 }
 
 .buy-item:hover {
-  background: rgba(255, 255, 255, 0.15);
+  background: rgba(255, 255, 255, 0.1);
   border-color: #00ffff;
   transform: translateX(5px);
 }
@@ -381,13 +361,11 @@ body {
 }
 
 .footer {
-  background: rgba(0, 0, 0, 0.7); /* Fondo más oscuro */
+  background: rgba(0, 0, 0, 0.3);
   border-top: 2px solid rgba(0, 255, 255, 0.3);
   padding: 1rem;
   text-align: center;
   flex-shrink: 0;
-  z-index: 2;
-  position: relative;
 }
 
 .token-address {
@@ -575,7 +553,7 @@ body {
     font-size: 2rem;
   }
   
-  .timer-container, .pot-display, .round-info, .level-progress, .winners-center {
+  .timer-container, .pot-display, .level-progress, .winners-center {
     min-width: auto;
     width: 100%;
     max-width: 500px;
