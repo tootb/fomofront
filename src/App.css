@@ -533,6 +533,11 @@ body {
   50% { opacity: 1; }
 }
 
+/* Desktop: Winners stay in center panel */
+.winners-in-center {
+  display: block;
+}
+
 /* Mobile Responsive Design */
 @media (max-width: 1200px) {
   .main-container {
@@ -550,8 +555,13 @@ body {
   .mobile-order-4 { order: 4; }
   .mobile-order-5 { order: 5; }
   
+  /* In mobile, winners break out of center-panel flow */
+  .winners-in-center {
+    width: 100%;
+    max-width: 400px;
+  }
+  
   .center-panel {
-    order: 1;
     display: flex;
     flex-direction: column;
     gap: 0.5rem;
@@ -563,12 +573,6 @@ body {
     width: 100%;
     max-width: 400px;
     padding: 1rem;
-  }
-  
-  .winners-panel {
-    width: 100%;
-    max-width: 400px;
-    padding: 0;
   }
   
   .app-title {

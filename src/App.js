@@ -46,7 +46,7 @@ function App() {
       </div>
 
       <div className="main-container">
-        {/* Mobile order will be handled by CSS */}
+        {/* Left panel - Level Requirements */}
         <div className="left-panel mobile-order-5">
           <LevelProgress 
             currentRound={gameState.currentRound}
@@ -57,7 +57,7 @@ function App() {
           />
         </div>
 
-        <div className="center-panel mobile-order-1-2">
+        <div className="center-panel">
           <div className="mobile-order-1">
             <PotDisplay pot={gameState.pot} />
           </div>
@@ -68,16 +68,14 @@ function App() {
               waitingForFirstBuy={gameState.waitingForFirstBuy}
             />
           </div>
+          <div className="winners-in-center mobile-order-4">
+            <Winners winners={gameState.winners} />
+          </div>
         </div>
 
         {/* Right panel - Recent Transactions */}
         <div className="right-panel mobile-order-3">
           <RecentBuys buys={gameState.recentBuys} />
-        </div>
-
-        {/* Winners panel - separate for mobile ordering */}
-        <div className="winners-panel mobile-order-4">
-          <Winners winners={gameState.winners} />
         </div>
       </div>
 

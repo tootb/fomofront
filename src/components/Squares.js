@@ -33,6 +33,10 @@ const Squares = ({
     const drawGrid = () => {
       ctx.clearRect(0, 0, canvas.width, canvas.height);
 
+      // Fill background with dark color first
+      ctx.fillStyle = '#0a0a0a';
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+
       const startX = Math.floor(gridOffset.current.x / squareSize) * squareSize;
       const startY = Math.floor(gridOffset.current.y / squareSize) * squareSize;
 
@@ -54,8 +58,6 @@ const Squares = ({
           ctx.strokeRect(squareX, squareY, squareSize, squareSize);
         }
       }
-
-      // Remove the gradient overlay to keep squares visible
     };
 
     const updateAnimation = () => {
