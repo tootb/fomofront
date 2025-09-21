@@ -68,7 +68,8 @@ function App() {
               waitingForFirstBuy={gameState.waitingForFirstBuy}
             />
           </div>
-          <div className="winners-in-center mobile-order-4">
+          {/* Only show Winners in center-panel on desktop */}
+          <div className="winners-desktop-only">
             <Winners winners={gameState.winners} />
           </div>
         </div>
@@ -76,6 +77,11 @@ function App() {
         {/* Right panel - Recent Transactions */}
         <div className="right-panel mobile-order-3">
           <RecentBuys buys={gameState.recentBuys} />
+        </div>
+        
+        {/* Winners panel - separate for mobile ordering */}
+        <div className="winners-mobile-only mobile-order-4">
+          <Winners winners={gameState.winners} />
         </div>
       </div>
 

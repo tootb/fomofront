@@ -533,13 +533,29 @@ body {
   50% { opacity: 1; }
 }
 
-/* Desktop: Winners stay in center panel */
-.winners-in-center {
+/* Desktop: Show Winners in center, hide mobile version */
+.winners-desktop-only {
   display: block;
+}
+
+.winners-mobile-only {
+  display: none;
 }
 
 /* Mobile Responsive Design */
 @media (max-width: 1200px) {
+  /* Mobile: Hide desktop Winners, show mobile version */
+  .winners-desktop-only {
+    display: none;
+  }
+  
+  .winners-mobile-only {
+    display: block;
+    width: 100%;
+    max-width: 400px;
+    padding: 0;
+  }
+  
   .main-container {
     display: flex;
     flex-direction: column;
@@ -554,12 +570,6 @@ body {
   .mobile-order-3 { order: 3; }
   .mobile-order-4 { order: 4; }
   .mobile-order-5 { order: 5; }
-  
-  /* In mobile, winners break out of center-panel flow */
-  .winners-in-center {
-    width: 100%;
-    max-width: 400px;
-  }
   
   .center-panel {
     display: flex;
