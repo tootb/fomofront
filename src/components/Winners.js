@@ -1,10 +1,6 @@
 import React from 'react';
 
 const Winners = ({ winners = {} }) => {
-  const formatWallet = (wallet) => {
-    return `${wallet.slice(0, 6)}...${wallet.slice(-6)}`;
-  };
-
   const formatAmount = (amount) => {
     return parseFloat(amount || 0).toFixed(2);
   };
@@ -61,9 +57,6 @@ const Winners = ({ winners = {} }) => {
                       <div className="winner-details">
                         <div className="winner-amount-compact">
                           {formatAmount(winner.amount)} SOL
-                        </div>
-                        <div className="winner-wallet-compact">
-                          {formatWallet(winner.wallet)}
                         </div>
                         {winner.prize && (
                           <div className="winner-prize">

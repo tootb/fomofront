@@ -2,10 +2,6 @@ import React from 'react';
 import moment from 'moment';
 
 const RecentBuys = ({ buys }) => {
-  const formatWallet = (wallet) => {
-    return `${wallet.slice(0, 6)}...${wallet.slice(-6)}`;
-  };
-
   const formatAmount = (amount) => {
     return parseFloat(amount).toFixed(2);
   };
@@ -76,10 +72,6 @@ const RecentBuys = ({ buys }) => {
                 {formatAmount(transaction.amount)} SOL
               </div>
               
-              <div className="buy-wallet">
-                {formatWallet(transaction.wallet)}
-              </div>
-              
               <div className="buy-time">
                 {moment(transaction.timestamp).format('HH:mm:ss')}
               </div>
@@ -89,7 +81,10 @@ const RecentBuys = ({ buys }) => {
                 onClick={() => isTxClickable(transaction.txHash) && openSolscanLink(transaction.txHash)}
                 style={{
                   cursor: isTxClickable(transaction.txHash) ? 'pointer' : 'default',
-                  opacity: isTxClickable(transaction.txHash) ? 1 : 0.6
+                  opacity: isTxClickable(transaction.txHash) ? 1 : 0.6,
+                  marginTop: '0.5rem',
+                  color: isTxClickable(transaction.txHash) ? '#00ffff' : '#888',
+                  fontSize: '0.8rem'
                 }}
                 title={isTxClickable(transaction.txHash) ? 'Click to view on Solscan' : 'Transaction not available on explorer'}
               >
