@@ -1,10 +1,10 @@
 // Token configuration
-export const TARGET_TOKEN = '3xqp9ybyD9ijcwwt2GVja1WFVioFZxgc283Jma2Spump';
+export const TARGET_TOKEN = '3VTyXa6LcmRWxnkkp76CY4saq31jecxtVvQ98TyXpump';
 
 // Game configuration
 export const GAME_CONFIG = {
   TOKEN_SYMBOL: '$PF3D',
-  TOKEN_ADDRESS: 'Contract',
+  TOKEN_ADDRESS: '3VTyXa6LcmRWxnkkp76CY4saq31jecxtVvQ98TyXpump',
   MIN_BUY_AMOUNT: 0.1
 };
 
