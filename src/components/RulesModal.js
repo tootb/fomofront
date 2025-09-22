@@ -33,7 +33,7 @@ const RulesModal = ({ onClose }) => {
           <li><strong>Each valid BUY:</strong> Adds +30 seconds to the timer</li>
           <li><strong>Each valid SELL:</strong> Subtracts -30 seconds from the timer</li>
           <li><strong>Game starts:</strong> With the first valid purchase of the round</li>
-          <li><strong>Initial timer:</strong> 2 hours per round</li>
+          <li><strong>Initial timer:</strong> 5 hours </li>
         </ul>
 
         <h3>🎯 Level System and Valid Transactions</h3>

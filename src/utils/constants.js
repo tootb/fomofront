@@ -8,8 +8,8 @@ export const GAME_CONFIG = {
   MIN_BUY_AMOUNT: 0.1
 };
 
-// Game timing constants
-export const INITIAL_TIME = 6 * 60 * 60 * 1000; // 6 hours in milliseconds
+// Game timing constants - CHANGED TO 5 HOURS
+export const INITIAL_TIME = 5 * 60 * 60 * 1000; // 5 hours in milliseconds
 export const MAX_TIME = 24 * 60 * 60 * 1000; // 24 hours max
 export const MIN_TIME = 5 * 60 * 1000; // 5 minutes minimum
 export const TIME_ADDITION = 30 * 1000; // 30 seconds in milliseconds
