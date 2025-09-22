@@ -3,8 +3,8 @@ export const TARGET_TOKEN = '3xqp9ybyD9ijcwwt2GVja1WFVioFZxgc283Jma2Spump';
 
 // Game configuration
 export const GAME_CONFIG = {
-  TOKEN_SYMBOL: '$FOMO',
-  TOKEN_ADDRESS: '3xqp9ybyD9ijcwwt2GVja1WFVioFZxgc283Jma2Spump',
+  TOKEN_SYMBOL: '$PF3D',
+  TOKEN_ADDRESS: 'Contract',
   MIN_BUY_AMOUNT: 0.1
 };
 

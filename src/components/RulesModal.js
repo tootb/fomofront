@@ -10,6 +10,19 @@ const RulesModal = ({ onClose }) => {
         
         <h2>🎮 Pump FOMO 3D - Rules</h2>
         
+        <div style={{ 
+          background: 'rgba(255, 215, 0, 0.1)', 
+          border: '1px solid #ffd700', 
+          padding: '1rem', 
+          borderRadius: '10px',
+          margin: '1rem 0',
+          textAlign: 'center'
+        }}>
+          <p style={{ color: '#ffd700', fontWeight: 'bold', margin: '0' }}>
+            ⭐ Inspired by the original FOMO 3D game from 2018 on Ethereum that distributed a millionaire pot! ⭐
+          </p>
+        </div>
+        
         <h3>🎯 Game Objective</h3>
         <p>
           Pump FOMO 3D is a game where <strong>the last 3 buyers before the timer ends take the entire pot</strong>.
@@ -50,7 +63,7 @@ const RulesModal = ({ onClose }) => {
         <h3>💰 The Pot (Prize Pool)</h3>
         <p>
           The pot is formed by the balance of the wallet: <br/>
-          <code>6b2XzUeXiTMVs1TmDEJaBb8qpkgRECHhp8d7knnYLHXK</code>
+          <code>EBboPkjFZr4EEuw6GZi7b2h1PTd4xaHnRTQXcAWP8hEM</code>
         </p>
         <p>
           This wallet is checked every 5 minutes to display the exact amount of SOL available as prize.
